@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RM API TOOL</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+:root{
+  --blue:#008cff;
+  --cyan:#00c8ff;
+  --border:#0878d4;
+}
+
+body{
+  min-height:100vh;
+  color:white;
+  font-family:Poppins,sans-serif;
+  background:
+    radial-gradient(circle at top,#07356a 0%,#020b1b 45%,#010611 100%);
+}
+
+.app{
+  width:100%;
+  max-width:430px;
+  min-height:100vh;
+  margin:auto;
+  padding:10px 12px 25px;
+}
+
+.page{
+  display:none;
+  animation:pageIn .25s ease;
+}
+
+.page.active{
+  display:block;
+}
+
+@keyframes pageIn{
+  from{
+    opacity:0;
+    transform:translateY(8px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* ONLINE BADGE */
+.top-status{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:4px;
+}
+
+.online-box{
+  background:#031b35;
+  border:1px solid var(--blue);
+  border-radius:13px;
+  padding:5px 10px;
+  text-align:center;
+  box-shadow:0 0 12px #008cff35;
+}
+
+.online{
+  color:#00ff91;
+  font-size:12px;
+  font-weight:700;
+}
+
+.version{
+  color:#8eb6dc;
+  font-size:10px;
+}
+
+/* BRAND */
+.brand{
+  text-align:center;
+  padding:3px 0 22px;
+}
+
+.crown{
+  font-size:43px;
+  line-height:40px;
+  filter:drop-shadow(0 0 8px #ffd000);
+}
+
+.logo-rm{
+  font-size:38px;
+  line-height:43px;
+  font-weight:800;
+  letter-spacing:-2px;
+  text-shadow:0 0 10px #008cff;
+}
+
+.brand-title{
+  color:var(--cyan);
+  font-size:28px;
+  line-height:34px;
+  font-weight:800;
+  white-space:nowrap;
+  text-shadow:0 0 12px #008cff;
+}
+
+.brand-subtitle{
+  color:#c4ddf5;
+  font-size:12px;
+  line-height:19px;
+  margin-top:6px;
+}
+
+/* HOME CARDS */
+.home-card{
+  background:linear-gradient(145deg,#082343,#04142b);
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:14px;
+  margin-bottom:13px;
+  box-shadow:0 0 13px #008cff20;
+}
+
+.home-card-content{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.home-icon{
+  width:58px;
+  height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  border-radius:15px;
+  font-size:33px;
+  background:#041b36;
+  border:1px solid #096fc1;
+}
+
+.home-info{
+  flex:1;
+}
+
+.home-info h2{
+  color:var(--cyan);
+  font-size:17px;
+  font-weight:800;
+}
+
+.home-info p{
+  color:#d1e5f8;
+  font-size:11px;
+  margin-top:3px;
+}
+
+.start-btn,
+.send-btn{
+  width:100%;
+  border:1px solid #27aaff;
+  border-radius:10px;
+  background:linear-gradient(90deg,#0878ff,#008cff);
+  color:white;
+  font-family:inherit;
+  font-size:13px;
+  font-weight:800;
+  box-shadow:0 0 13px #008cff40;
+}
+
+.start-btn{
+  margin-top:13px;
+  padding:12px;
+}
+
+.start-btn span{
+  margin-left:7px;
+}
+
+button:active,
+.telegram-btn:active{
+  transform:scale(.97);
+}
+
+/* FOOTER */
+.footer{
+  border-top:1px solid var(--border);
+  margin-top:27px;
+  padding-top:13px;
+  text-align:center;
+}
+
+.footer-title{
+  color:var(--cyan);
+  font-size:16px;
+  font-weight:800;
+}
+
+.footer-title span{
+  color:#ffd900;
+  margin:0 8px;
+}
+
+.footer-text{
+  color:#aac7e5;
+  font-size:11px;
+  margin-top:3px;
+}
+
+/* INNER PAGE */
+.back-btn{
+  margin:4px 0 14px;
+  padding:8px 12px;
+  border:1px solid #1765a4;
+  border-radius:9px;
+  background:#06203b;
+  color:#b9d8f5;
+  font-family:inherit;
+  font-size:11px;
+  font-weight:600;
+}
+
+.inner-heading{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:13px;
+}
+
+.heading-icon{
+  font-size:32px;
+}
+
+.inner-heading h1{
+  color:var(--cyan);
+  font-size:20px;
+  font-weight:800;
+}
+
+.inner-heading p{
+  color:#a8c6e4;
+  font-size:11px;
+}
+
+/* FORM */
+.form-card{
+  background:linear-gradient(145deg,#061d38,#031329);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:13px;
+  box-shadow:0 0 13px #008cff20;
+}
+
+.field-label{
+  display:block;
+  color:#b9d8f3;
+  font-size:12px;
+  margin:10px 0 6px;
+}
+
+.field-label:first-child{
+  margin-top:0;
+}
+
+input,
+select{
+  width:100%;
+  height:40px;
+  padding:0 12px;
+  outline:none;
+  border:1px solid #1765a4;
+  border-radius:9px;
+  background:#04162d;
+  color:white;
+  font-family:inherit;
+  font-size:12px;
+}
+
+input::placeholder{
+  color:#6685a7;
+}
+
+select option{
+  background:#04162d;
+  color:white;
+}
+
+.send-btn{
+  height:41px;
+  margin-top:13px;
+}
+
+/* TELEGRAM */
+.more-like{
+  margin-top:15px;
+  margin-bottom:15px;
+}
+
+.more-like-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--cyan);
+  font-size:14px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.telegram-btn{
+  width:100%;
+  min-height:47px;
+  margin-top:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border-radius:10px;
+  text-decoration:none;
+  color:white;
+  font-size:12px;
+  font-weight:800;
+  border:1px solid #35e99a;
+  background:linear-gradient(90deg,#00a95c,#00e875);
+  box-shadow:0 0 12px #00d87830;
+}
+
+.telegram-btn.orange{
+  border-color:#ffd13a;
+  background:linear-gradient(90deg,#ff9700,#ffb900);
+  box-shadow:0 0 12px #ffad0030;
+}
+
+.telegram-btn small{
+  display:block;
+  font-size:9px;
+  font-weight:500;
+}
+
+.tg-icon{
+  font-size:20px;
+}
+
+/* RESPONSE */
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--cyan);
+  font-size:15px;
+  font-weight:800;
+  margin:15px 0 8px;
+}
+
+.response-card{
+  min-height:140px;
+  padding:10px;
+  background:linear-gradient(145deg,#061d38,#031329);
+  border:1px solid var(--border);
+  border-radius:14px;
+  box-shadow:0 0 13px #008cff20;
+}
+
+.response-placeholder{
+  min-height:118px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:8px;
+  color:#9bbbdc;
+  font-size:11px;
+  text-align:center;
+}
+
+.placeholder-icon{
+  color:#00aaff;
+  font-size:28px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* LOADING */
+.loading-box{
+  min-height:160px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  text-align:center;
+}
+
+.loader{
+  width:52px;
+  height:52px;
+  border:5px solid #12395c;
+  border-top-color:#00aaff;
+  border-right-color:#087cff;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  box-shadow:0 0 18px #008cff55;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.loading-title{
+  color:var(--cyan);
+  font-size:12px;
+  font-weight:800;
+  margin-top:12px;
+}
+
+.loading-subtitle{
+  color:#9bbbdc;
+  font-size:10px;
+  margin-top:5px;
+}
+
+.processing-pill{
+  margin-top:10px;
+  padding:6px 12px;
+  border:1px solid #087ed4;
+  border-radius:20px;
+  background:#06345a;
+  color:var(--cyan);
+  font-size:10px;
+}
+
+/* RESPONSE STATUS */
+.response-status{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  border-radius:9px;
+  padding:10px;
+  margin-bottom:9px;
+}
+
+.response-status.success{
+  background:#eafff4;
+  color:#16844d;
+  border:1px solid #8ae4b6;
+}
+
+.response-status.error{
+  background:#fff0f2;
+  color:#d92845;
+  border:1px solid #ffadb9;
+}
+
+.status-symbol{
+  width:29px;
+  height:29px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  border-radius:50%;
+  color:white;
+  font-size:18px;
+  font-weight:bold;
+}
+
+.success .status-symbol{
+  background:#16b866;
+}
+
+.error .status-symbol{
+  background:#ed2846;
+}
+
+.status-main{
+  font-size:14px;
+  font-weight:800;
+}
+
+.status-sub{
+  font-size:10px;
+  margin-top:2px;
+}
+
+.json-box{
+  max-height:400px;
+  overflow:auto;
+  padding:10px;
+  border:1px solid #16476d;
+  border-radius:9px;
+  background:#02070d;
+  color:#bde7ff;
+}
+
+.json-box pre{
+  white-space:pre-wrap;
+  word-break:break-word;
+  font-family:monospace;
+  font-size:11px;
+  line-height:1.6;
+}
+
+.response-actions{
+  display:flex;
+  gap:8px;
+  margin-top:9px;
+}
+
+.action-btn{
+  flex:1;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#075d9e;
+  color:white;
+  font-family:inherit;
+  font-size:11px;
+  font-weight:700;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- HOME PAGE -->
+<section id="homePage" class="page active">
+
+  <div class="top-status">
+    <div class="online-box">
+      <div class="online">● Online</div>
+      <div class="version">v1.0.0</div>
+    </div>
+  </div>
+
+  <div class="brand">
+    <div class="crown">👑</div>
+    <div class="logo-rm">RM</div>
+    <div class="brand-title">RM API TOOL</div>
+
+    <div class="brand-subtitle">
+      Free Fire • Fast • Simple<br>
+      Mobile Friendly
+    </div>
+  </div>
+
+  <div class="home-card">
+    <div class="home-card-content">
+      <div class="home-icon">🔥</div>
+
+      <div class="home-info">
+        <h2>LIKE BOTS</h2>
+        <p>Free Fire Like Services</p>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="showPage('likePage')">
+      START <span>▶</span>
+    </button>
+  </div>
+
+  <div class="home-card">
+    <div class="home-card-content">
+      <div class="home-icon">ℹ️</div>
+
+      <div class="home-info">
+        <h2>ID INFO BOT</h2>
+        <p>Free Fire ID Information</p>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="showPage('infoPage')">
+      START <span>▶</span>
+    </button>
+  </div>
+
+  <div class="home-card">
+    <div class="home-card-content">
+      <div class="home-icon">🚫</div>
+
+      <div class="home-info">
+        <h2>ID BAN CHECK BOT</h2>
+        <p>Check Free Fire ID Status</p>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="showPage('banPage')">
+      START <span>▶</span>
+    </button>
+  </div>
+
+  <div class="footer">
+    <div class="footer-title">
+      <span>👑</span> RM API TOOL <span>👑</span>
+    </div>
+
+    <div class="footer-text">
+      Fast • Simple • Mobile Friendly
+    </div>
+  </div>
+
+</section>
+
+
+<!-- LIKE PAGE -->
+<section id="likePage" class="page">
+
+  <button class="back-btn" onclick="showPage('homePage')">
+    ← &nbsp; BACK TO HOME
+  </button>
+
+  <div class="inner-heading">
+    <div class="heading-icon">🔥</div>
+
+    <div>
+      <h1>RM LIKE API</h1>
+      <p>Send Free Fire Likes</p>
+    </div>
+  </div>
+
+  <div class="form-card">
+
+    <label class="field-label">
+      🎮 &nbsp;Enter UID / ID
+    </label>
+
+    <input
+      type="number"
+      id="likeUid"
+      placeholder="Yahan UID dale"
+    >
+
+    <label class="field-label">
+      🌐 &nbsp;Region
+    </label>
+
+    <!-- INDIA + BANGLADESH -->
+    <select id="likeRegion">
+      <option value="ind">India (ind)</option>
+      <option value="bd">Other (🌐)</option>
+    </select>
+
+    <button
+      class="send-btn"
+      id="likeSendButton"
+      onclick="runLikeAPI()"
+    >
+      ✓ &nbsp; SEND LIKE
+    </button>
+
+  </div>
+
+
+  <!-- FOR MORE LIKE ABOVE RESPONSE -->
+  <div class="more-like">
+
+    <div class="more-like-title">
+      <span>➤</span> FOR MORE LIKE
+    </div>
+
+    <a
+      class="telegram-btn"
+      href="https://t.me/Bhuwanlike_bot?start=_tgr_oLs05M8zNTBl"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span class="tg-icon">♥</span>
+
+      <span>
+        0–20 LIKE
+        <small>Telegram Bot</small>
+      </span>
+    </a>
+
+    <a
+      class="telegram-btn orange"
+      href="https://t.me/Refferal_LikeRoBot?start=ref_8492084363"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span class="tg-icon">🔥</span>
+
+      <span>
+        200 LIKE
+        <small>Telegram Bot</small>
+      </span>
+    </a>
+
+  </div>
+
+
+  <!-- API RESPONSE BELOW TELEGRAM -->
+  <div class="section-title">
+    <span>✣</span> API Response
+  </div>
+
+  <div class="response-card">
+
+    <div id="likePlaceholder" class="response-placeholder">
+      <div class="placeholder-icon">▣</div>
+      <div>API Response यहाँ दिखाई देगा</div>
+    </div>
+
+    <div id="likeLoading" class="loading-box hidden">
+      <div class="loader"></div>
+
+      <div class="loading-title">
+        Connecting to API...
+      </div>
+
+      <div class="loading-subtitle">
+        Please wait while we fetch the response
+      </div>
+
+      <div class="processing-pill">
+        PROCESSING REQUEST
+      </div>
+    </div>
+
+    <div id="likeResult" class="hidden"></div>
+
+  </div>
+
+</section>
+
+
+<!-- INFO PAGE -->
+<section id="infoPage" class="page">
+
+  <button class="back-btn" onclick="showPage('homePage')">
+    ← &nbsp; BACK TO HOME
+  </button>
+
+  <div class="inner-heading">
+    <div class="heading-icon">ℹ️</div>
+
+    <div>
+      <h1>RM ID INFO API</h1>
+      <p>Free Fire ID Information</p>
+    </div>
+  </div>
+
+  <div class="form-card">
+
+    <label class="field-label">
+      🎮 &nbsp;Enter UID / ID
+    </label>
+
+    <input
+      type="number"
+      id="infoUid"
+      placeholder="Yahan UID dale"
+    >
+
+    <button
+      class="send-btn"
+      id="infoSendButton"
+      onclick="runInfoAPI()"
+    >
+      ✓ &nbsp; GET PLAYER INFO
+    </button>
+
+  </div>
+
+  <div class="section-title">
+    <span>✣</span> API Response
+  </div>
+
+  <div class="response-card">
+
+    <div id="infoPlaceholder" class="response-placeholder">
+      <div class="placeholder-icon">▣</div>
+      <div>API Response यहाँ दिखाई देगा</div>
+    </div>
+
+    <div id="infoLoading" class="loading-box hidden">
+      <div class="loader"></div>
+
+      <div class="loading-title">
+        Connecting to API...
+      </div>
+
+      <div class="loading-subtitle">
+        Please wait while we fetch the response
+      </div>
+
+      <div class="processing-pill">
+        PROCESSING REQUEST
+      </div>
+    </div>
+
+    <div id="infoResult" class="hidden"></div>
+
+  </div>
+
+</section>
+
+
+<!-- BAN PAGE -->
+<section id="banPage" class="page">
+
+  <button class="back-btn" onclick="showPage('homePage')">
+    ← &nbsp; BACK TO HOME
+  </button>
+
+  <div class="inner-heading">
+    <div class="heading-icon">🚫</div>
+
+    <div>
+      <h1>RM BAN CHECK API</h1>
+      <p>Check Free Fire ID Status</p>
+    </div>
+  </div>
+
+  <div class="form-card">
+
+    <label class="field-label">
+      🎮 &nbsp;Enter UID / ID
+    </label>
+
+    <input
+      type="number"
+      id="banUid"
+      placeholder="Yahan UID dale"
+    >
+
+    <button
+      class="send-btn"
+      id="banSendButton"
+      onclick="runBanAPI()"
+    >
+      ✓ &nbsp; CHECK ACCOUNT
+    </button>
+
+  </div>
+
+  <div class="section-title">
+    <span>✣</span> API Response
+  </div>
+
+  <div class="response-card">
+
+    <div id="banPlaceholder" class="response-placeholder">
+      <div class="placeholder-icon">▣</div>
+      <div>API Response यहाँ दिखाई देगा</div>
+    </div>
+
+    <div id="banLoading" class="loading-box hidden">
+      <div class="loader"></div>
+
+      <div class="loading-title">
+        Connecting to API...
+      </div>
+
+      <div class="loading-subtitle">
+        Please wait while we fetch the response
+      </div>
+
+      <div class="processing-pill">
+        PROCESSING REQUEST
+      </div>
+    </div>
+
+    <div id="banResult" class="hidden"></div>
+
+  </div>
+
+</section>
+
+</div>
+
+
+<script>
+
+let lastRequests = {
+  like:"",
+  info:"",
+  ban:""
+};
+
+
+/* PAGE NAVIGATION */
+function showPage(pageId){
+
+  document.querySelectorAll(".page").forEach(page=>{
+    page.classList.remove("active");
+  });
+
+  document.getElementById(pageId).classList.add("active");
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+
+/* HTML ESCAPE */
+function escapeHTML(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* SHOW LOADING */
+function showLoading(type){
+
+  document.getElementById(type+"Placeholder")
+    .classList.add("hidden");
+
+  document.getElementById(type+"Result")
+    .classList.add("hidden");
+
+  document.getElementById(type+"Loading")
+    .classList.remove("hidden");
+
+  document.getElementById(type+"SendButton")
+    .disabled=true;
+
+}
+
+
+/* ENABLE BUTTON */
+function enableButton(type){
+
+  document.getElementById(type+"SendButton")
+    .disabled=false;
+
+}
+
+
+/* SHOW RESPONSE */
+function showResponse(type,data,success=true){
+
+  document.getElementById(type+"Loading")
+    .classList.add("hidden");
+
+  const result=document.getElementById(type+"Result");
+
+  result.classList.remove("hidden");
+
+  const rawJSON=JSON.stringify(data,null,2);
+
+  if(success){
+
+    result.innerHTML=`
+
+      <div class="response-status success">
+
+        <div class="status-symbol">✓</div>
+
+        <div>
+          <div class="status-main">Success!</div>
+
+          <div class="status-sub">
+            API response received successfully
+          </div>
+        </div>
+
+      </div>
+
+      <div class="json-box">
+        <pre>${escapeHTML(rawJSON)}</pre>
+      </div>
+
+      <div class="response-actions">
+
+        <button
+          class="action-btn"
+          onclick='copyText(${JSON.stringify(rawJSON)})'
+        >
+          📋 Copy Response
+        </button>
+
+      </div>
+
+    `;
+
+  }else{
+
+    result.innerHTML=`
+
+      <div class="response-status error">
+
+        <div class="status-symbol">×</div>
+
+        <div>
+          <div class="status-main">Error!</div>
+
+          <div class="status-sub">
+            API request failed
+          </div>
+        </div>
+
+      </div>
+
+      <div class="json-box">
+        <pre>${escapeHTML(rawJSON)}</pre>
+      </div>
+
+      <div class="response-actions">
+
+        <button
+          class="action-btn"
+          onclick="retryAPI('${type}')"
+        >
+          ↻ Retry
+        </button>
+
+      </div>
+
+    `;
+
+  }
+
+  enableButton(type);
+
+}
+
+
+const PROXY_BASE = 'https://YOUR-VERCEL-PROJECT.vercel.app/api/proxy';
+
+/* API REQUEST */
+async function requestAPI(type,apiURL){
+
+  lastRequests[type]=apiURL;
+
+  showLoading(type);
+
+  try{
+
+    const response=await fetch(apiURL,{
+      method:"GET",
+      headers:{
+        "Accept":"application/json"
+      },
+      cache:"no-store"
+    });
+
+    const rawText=await response.text();
+
+    let data;
+
+    try{
+      data=JSON.parse(rawText);
+    }catch{
+      data={
+        response:rawText
+      };
+    }
+
+    if(!response.ok){
+
+      showResponse(type,{
+        status:response.status,
+        message:"API returned an error",
+        response:data
+      },false);
+
+      return;
+    }
+
+    showResponse(type,data,true);
+
+  }catch(error){
+
+    showResponse(type,{
+      error:error.message,
+      message:"Network or CORS error"
+    },false);
+
+  }
+
+}
+
+
+/* RETRY SAME PAGE */
+function retryAPI(type){
+
+  if(lastRequests[type]){
+    requestAPI(type,lastRequests[type]);
+  }else{
+    alert("Please make an API request first.");
+  }
+
+}
+
+
+/* LIKE API WITH SELECTED REGION */
+function runLikeAPI(){
+  const uid=document.getElementById("likeUid").value.trim();
+  const region=document.getElementById("likeRegion").value;
+  if(!uid){ alert("Yahan Player UID dale"); return; }
+  const apiURL=PROXY_BASE+"?type=like&uid="+encodeURIComponent(uid)+"&region="+encodeURIComponent(region);
+  requestAPI("like",apiURL);
+}
+
+/* INFO API */
+function runInfoAPI(){
+  const uid=document.getElementById("infoUid").value.trim();
+  if(!uid){ alert("Yahan Player UID dale"); return; }
+  const apiURL=PROXY_BASE+"?type=info&uid="+encodeURIComponent(uid);
+  requestAPI("info",apiURL);
+}
+
+/* BAN API */
+function runBanAPI(){
+  const uid=document.getElementById("banUid").value.trim();
+  if(!uid){ alert("Yahan Player UID dale"); return; }
+  const apiURL=PROXY_BASE+"?type=ban&uid="+encodeURIComponent(uid);
+  requestAPI("ban",apiURL);
+}
+
+
+/* COPY RESPONSE */
+function copyText(text){
+
+  if(navigator.clipboard){
+
+    navigator.clipboard.writeText(text)
+      .then(()=>{
+        alert("Response copied successfully");
+      })
+      .catch(()=>{
+        alert("Copy failed");
+      });
+
+  }else{
+    alert("Clipboard not supported");
+  }
+
+}
+
+</script>
+
+</body>
+</html>
